@@ -1,5 +1,8 @@
-package anthonyknight.wguinventorytrackingapplication;
+package anthonyknight.wguinventorytrackingapplication.view;
 
+import anthonyknight.wguinventorytrackingapplication.model.Part;
+import anthonyknight.wguinventorytrackingapplication.model.InHouse;
+import anthonyknight.wguinventorytrackingapplication.model.Inventory;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.collections.ObservableList;
@@ -9,14 +12,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
-public class MainApp extends Application {
+public class MainMenu extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainMenu.fxml"));
         
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("/styles/Styles.css");
+        scene.getStylesheets().add("/styles/MainMenuStyle.css");
         
         stage.setTitle("JavaFX and Maven");
         stage.setScene(scene);
