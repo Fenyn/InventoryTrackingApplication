@@ -17,8 +17,8 @@ public abstract class Part {
     int min;
     int max;
     
-    Part(int id, String name, double price, int stock, int min, int max){
-        this.id = id;
+    Part(String name, double price, int stock, int min, int max){
+        this.id = -1;
         this.name = name;
         this.price = price;
         this.stock = stock;

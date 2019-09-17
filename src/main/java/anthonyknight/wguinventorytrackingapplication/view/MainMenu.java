@@ -1,5 +1,6 @@
 package anthonyknight.wguinventorytrackingapplication.view;
 
+import anthonyknight.wguinventorytrackingapplication.controller.MainMenuController;
 import anthonyknight.wguinventorytrackingapplication.model.Part;
 import anthonyknight.wguinventorytrackingapplication.model.InHouse;
 import anthonyknight.wguinventorytrackingapplication.model.Inventory;
@@ -9,6 +10,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 
@@ -16,28 +20,8 @@ public class MainMenu extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainMenu.fxml"));
-        
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add("/styles/MainMenuStyle.css");
-        
-        stage.setTitle("JavaFX and Maven");
-        stage.setScene(scene);
-        stage.show();
-        
-        Inventory inventory = new Inventory();
-        inventory.addPart(new InHouse(0, "axe", 2.00, 3, 0, 5, 1234));
-        System.out.println("Created new Part");
-        
-        ObservableList<Part> allparts = inventory.getAllParts();
-        for(Part part : allparts){
-            System.out.println("ID " + part.getID());
-            System.out.println("Name " + part.getName());
-            System.out.println("Price " + part.getPrice());
-            System.out.println("Quantity " + part.getStock());
-            
-        }
-        
+        MainMenuController mainController = new MainMenuController();
+        mainController.showStage();
     }
 
     /**
@@ -51,5 +35,4 @@ public class MainMenu extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }

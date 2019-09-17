@@ -20,7 +20,8 @@ public class Inventory {
         if(allParts == null){
             allParts = FXCollections.observableArrayList();
         }
-        
+        int partID = allParts.size();
+        newPart.setID(partID+1);
         allParts.add(newPart);
     }
     
@@ -29,6 +30,8 @@ public class Inventory {
             allProducts = FXCollections.observableArrayList();
         }
         
+        int productID = allProducts.size();
+        newProduct.setId(productID+1);
         allProducts.add(newProduct);
     }
     
