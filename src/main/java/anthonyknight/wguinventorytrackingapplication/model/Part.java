@@ -73,4 +73,12 @@ public abstract class Part {
     public int getMax(){
         return max;
     }
+    
+    public String getVariable(){
+        return "";
+    }
+    
+    public void setVariable(String input){
+        
+    }
 }

@@ -13,91 +13,103 @@ import javafx.collections.ObservableList;
  * @author Midge
  */
 public class Inventory {
+
     ObservableList<Part> allParts;
     ObservableList<Product> allProducts;
-    
-    public void addPart(Part newPart){
-        if(allParts == null){
+
+    public void addPart(Part newPart) {
+        if (allParts == null) {
             allParts = FXCollections.observableArrayList();
+            newPart.setID(1);
+        } else {
+            Part part = allParts.get(allParts.size() - 1);
+            newPart.setID(part.id + 1);
         }
-        int partID = allParts.size();
-        newPart.setID(partID+1);
+
         allParts.add(newPart);
     }
-    
-    public void addProduct(Product newProduct){
-        if(allProducts == null){
+
+    public void addProduct(Product newProduct) {
+        if (allProducts == null) {
             allProducts = FXCollections.observableArrayList();
+            newProduct.setId(1);
+        } else {
+            Product product = allProducts.get(allProducts.size() - 1);
+            newProduct.setId(product.id + 1);
         }
-        
-        int productID = allProducts.size();
-        newProduct.setId(productID+1);
+
         allProducts.add(newProduct);
     }
-    
-    public Part lookupPart(int partID){
-        for(Part part : allParts){
-            if (part.getID() == partID){
+
+    public Part lookupPart(int partID) {
+        for (Part part : allParts) {
+            if (part.getID() == partID) {
                 return part;
             }
         }
         return null;
     }
-    
-    public Product lookupProduct(int productID){
-        for(Product product : allProducts){
-            if (product.getId() == productID){
+
+    public Product lookupProduct(int productID) {
+        for (Product product : allProducts) {
+            if (product.getId() == productID) {
                 return product;
             }
         }
         return new Product();
     }
-    
-    public ObservableList<Part> lookupPart(String partName){
+
+    public ObservableList<Part> lookupPart(String partName) {
         ObservableList<Part> foundParts = FXCollections.emptyObservableList();
-        
-        for(Part part : allParts ){
-            if(part.name.equalsIgnoreCase(partName)){
+
+        for (Part part : allParts) {
+            if (part.name.equalsIgnoreCase(partName)) {
                 foundParts.add(part);
             }
         }
-        
+
         return foundParts;
     }
-    
-    public ObservableList<Product> lookupProduct(String productName){
+
+    public ObservableList<Product> lookupProduct(String productName) {
         ObservableList<Product> foundProducts = FXCollections.emptyObservableList();
-        
-        for(Product product : allProducts){
-            if(product.name.equalsIgnoreCase(productName)){
+
+        for (Product product : allProducts) {
+            if (product.name.equalsIgnoreCase(productName)) {
                 foundProducts.add(product);
             }
         }
         return foundProducts;
     }
-    
-    public void updatePart(int index, Part selectedPart){
+
+    public void updatePart(int index, Part selectedPart) {
         allParts.set(index, selectedPart);
     }
-    
-    public void updateProduct(int index, Product selectedProduct){
+
+    public void updateProduct(int index, Product selectedProduct) {
         allProducts.set(index, selectedProduct);
     }
-    
-    public void deletePart(Part selectedPart){
+
+    public void deletePart(Part selectedPart) {
         allParts.remove(selectedPart);
     }
-    
-    public void deleteProduct(Product selectedProduct){
+
+    public void deleteProduct(Product selectedProduct) {
         allProducts.remove(selectedProduct);
     }
-    
-    public ObservableList<Part> getAllParts(){
+
+    public ObservableList<Part> getAllParts() {
         return allParts;
     }
-    
-    public ObservableList<Product> getAllProducts(){
+
+    public ObservableList<Product> getAllProducts() {
         return allProducts;
+    }
+    
+    public int GetIndexOfPartByID(int partID){
+        Part part = lookupPart(partID);
+        int index = allParts.indexOf(part);
+        return index;
     }
 
 }

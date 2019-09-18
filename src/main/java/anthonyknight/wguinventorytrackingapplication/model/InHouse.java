@@ -24,4 +24,15 @@ public class InHouse extends Part{
     public int getMachineId(){
         return machineId;
     }
+    
+    @Override
+    public String getVariable(){
+        return String.valueOf(machineId);
+    }
+    
+    @Override
+    public void setVariable(String input){
+        int machID = Integer.valueOf(input);
+        setMachineId(machID);
+    }
 }

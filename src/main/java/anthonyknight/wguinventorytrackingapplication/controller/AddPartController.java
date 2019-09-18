@@ -62,7 +62,7 @@ public class AddPartController implements Initializable {
         thisStage = new Stage();
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddPartInHouse.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddPart.fxml"));
             loader.setController(this);
             Parent root = loader.load();
 
@@ -147,6 +147,11 @@ public class AddPartController implements Initializable {
         thisStage.showAndWait();
     }
 
+    private void alertUser(String input) {
+        Alert alert = new Alert(AlertType.ERROR, input, ButtonType.OK);
+        alert.showAndWait();
+    }
+
     private boolean validateFunction() {
         if (NamePrompt.getText().isEmpty()
                 || PricePrompt.getText().isEmpty()
@@ -154,8 +159,7 @@ public class AddPartController implements Initializable {
                 || MinPrompt.getText().isEmpty()
                 || MaxPrompt.getText().isEmpty()
                 || VariablePrompt.getText().isEmpty()) {
-            Alert alert = new Alert(AlertType.ERROR, "All fields must contain values", ButtonType.OK);
-            alert.showAndWait();
+            alertUser("All fields must contain a value");
 
             return false;
         }
@@ -164,19 +168,7 @@ public class AddPartController implements Initializable {
         try {
             Double.parseDouble(PricePrompt.getText());
         } catch (NumberFormatException e) {
-            Alert alert = new Alert(AlertType.ERROR, "Price contains invalid input", ButtonType.OK);
-            alert.showAndWait();
-
-            return false;
-        }
-
-        //ensure stock field contains valid input
-        try {
-            Integer.parseInt(StockPrompt.getText());
-        } catch (NumberFormatException e) {
-            Alert alert = new Alert(AlertType.ERROR, "Stock must be an integer", ButtonType.OK);
-            alert.showAndWait();
-
+            alertUser("Price contains invalid input");
             return false;
         }
 
@@ -184,9 +176,7 @@ public class AddPartController implements Initializable {
         try {
             Integer.parseInt(MinPrompt.getText());
         } catch (NumberFormatException e) {
-            Alert alert = new Alert(AlertType.ERROR, "Min must be an integer", ButtonType.OK);
-            alert.showAndWait();
-
+            alertUser("Min must be an integer");
             return false;
         }
 
@@ -194,9 +184,7 @@ public class AddPartController implements Initializable {
         try {
             Integer.parseInt(MaxPrompt.getText());
         } catch (NumberFormatException e) {
-            Alert alert = new Alert(AlertType.ERROR, "Max must be an integer", ButtonType.OK);
-            alert.showAndWait();
-
+            alertUser("Max must be an integer");
             return false;
         }
 
@@ -205,9 +193,20 @@ public class AddPartController implements Initializable {
         int max = Integer.parseInt(MaxPrompt.getText());
 
         if (max < min) {
-            Alert alert = new Alert(AlertType.ERROR, "Max value cannot be less than min value", ButtonType.OK);
-            alert.showAndWait();
+            alertUser("Max value cannot be less than min value");
+            return false;
+        }
 
+        //ensure stock field contains valid input
+        try {
+            int stock = Integer.parseInt(StockPrompt.getText());
+            if (stock < min || stock > max) {
+                alertUser("Stock must be within the min and max bounds");
+                return false;
+            }
+            
+        } catch (NumberFormatException e) {
+            alertUser("Stock must be an integer");
             return false;
         }
 
@@ -216,9 +215,7 @@ public class AddPartController implements Initializable {
             try {
                 Integer.parseInt(VariablePrompt.getText());
             } catch (NumberFormatException e) {
-                Alert alert = new Alert(AlertType.ERROR, "Machine ID must be an integer", ButtonType.OK);
-                alert.showAndWait();
-
+                alertUser("Machine ID must be an integer");
                 return false;
             }
         }

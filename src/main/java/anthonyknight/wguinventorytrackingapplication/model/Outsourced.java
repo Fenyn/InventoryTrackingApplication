@@ -25,4 +25,14 @@ public class Outsourced extends Part{
     public String getCompanyName(){
         return companyName;
     }
+    
+    @Override
+    public String getVariable(){
+        return getCompanyName();
+    }
+    
+    @Override
+    public void setVariable(String input){
+        setCompanyName(input);
+    }
 }
