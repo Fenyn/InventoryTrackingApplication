@@ -122,16 +122,11 @@ public class MainMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         inventory = new Inventory();
-        inventory.addPart(new InHouse("axe", 2.00, 3, 0, 5, 1234));
-        inventory.addPart(new InHouse("sword", 5.00, 3, 0, 5, 1234));
-        inventory.addPart(new InHouse("hammer", 5.00, 3, 0, 5, 1234));
-        inventory.addPart(new InHouse("basketball", 5.00, 3, 0, 5, 1234));
+//        inventory.addPart(new InHouse("axe", 2.00, 3, 0, 5, 1234));
+//        inventory.addPart(new InHouse("sword", 5.00, 3, 0, 5, 1234));
+//        inventory.addPart(new InHouse("hammer", 5.00, 3, 0, 5, 1234));
+//        inventory.addPart(new InHouse("basketball", 5.00, 3, 0, 5, 1234));
 
-        Product prod = new Product("big hammer", 12.00, 4, 0, 10);
-        prod.addAssociatedPart(inventory.lookupPart(2));
-        prod.addAssociatedPart(inventory.lookupPart(3));
-
-        inventory.addProduct(prod);
 
         allParts = inventory.getAllParts();
 
@@ -160,12 +155,12 @@ public class MainMenuController implements Initializable {
         int index = inventory.GetIndexOfPartByID(part.getID());
         inventory.updatePart(index, part);
     }
-    
-    public void AddProduct(Product prod){
+
+    public void AddProduct(Product prod) {
         inventory.addProduct(prod);
     }
-    
-    public void ModifyProduct(Product prod){
+
+    public void ModifyProduct(Product prod) {
         int index = inventory.GetIndexOfProductByID(prod.getID());
         inventory.updateProduct(index, prod);
     }
@@ -187,7 +182,14 @@ public class MainMenuController implements Initializable {
 
     @FXML
     void ProductModifyButton(ActionEvent event) {
-
+        Product product = ProductTable.getSelectionModel().getSelectedItem();
+        if (product == null) {
+            Alert alert = new Alert(AlertType.ERROR, "You must select an item to modify from the table", ButtonType.OK);
+            alert.showAndWait();
+        } else {
+            ModifyProductController modifyProductController = new ModifyProductController(this, product);
+            modifyProductController.showStage();
+        }
     }
 
     @FXML
@@ -199,8 +201,8 @@ public class MainMenuController implements Initializable {
     void ProductSearchButtonAction(ActionEvent event) {
 
     }
-    
-    public ObservableList<Part> GetAllParts(){
+
+    public ObservableList<Part> GetAllParts() {
         return inventory.getAllParts();
     }
 

@@ -34,7 +34,7 @@ public class ModifyProductController implements Initializable {
 
     ObservableList<Part> allParts;
     ObservableList<Part> currentParts;
-    
+
     @FXML
     private TextField IDField;
 
@@ -118,12 +118,17 @@ public class ModifyProductController implements Initializable {
             activeProduct.setMin(min);
             activeProduct.setMax(max);
 
+            ObservableList<Part> currentActiveParts = activeProduct.getAllAssociatedParts();
+            for (int i = 0; i <  currentActiveParts.size(); i++){
+                activeProduct.deleteAssociatedPart(currentActiveParts.get(i));
+            }
+
             Product prod = new Product(name, price, stock, min, max);
-            for (Part part : currentParts){
+            for (Part part : currentParts) {
                 prod.addAssociatedPart(part);
             }
-            
-            mainController.AddProduct(prod);
+
+            mainController.ModifyProduct(prod);
             thisStage.close();
         }
     }
@@ -150,10 +155,10 @@ public class ModifyProductController implements Initializable {
         this.activeProduct = prod;
 
         thisStage = new Stage();
-        currentParts = FXCollections.observableArrayList();
+        currentParts = activeProduct.getAllAssociatedParts();
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddProduct.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ModifyProduct.fxml"));
             loader.setController(this);
             Parent root = loader.load();
 
@@ -166,14 +171,14 @@ public class ModifyProductController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         PopulateWindow();
     }
 
     public void showStage() {
         thisStage.showAndWait();
     }
-    
+
     private void PopulateWindow() {
         String ID = String.valueOf(activeProduct.getID());
         String Name = String.valueOf(activeProduct.getName());
@@ -190,7 +195,7 @@ public class ModifyProductController implements Initializable {
         MaxPrompt.setText(Max);
 
     }
-    
+
     //small wrapper to create user error alerts
     private void alertUser(String input) {
         Alert alert = new Alert(Alert.AlertType.ERROR, input, ButtonType.OK);
@@ -248,7 +253,7 @@ public class ModifyProductController implements Initializable {
                 alertUser("Stock must be within the min and max bounds");
                 return false;
             }
-            
+
         } catch (NumberFormatException e) {
             alertUser("Stock must be an integer");
             return false;
@@ -256,7 +261,7 @@ public class ModifyProductController implements Initializable {
 
         return true;
     }
-    
+
     //empty all text prompts to reset the form
     private void clearInputs() {
         NamePrompt.clear();

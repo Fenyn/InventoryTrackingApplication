@@ -113,6 +113,7 @@ public class AddProductController implements Initializable {
                 prod.addAssociatedPart(part);
             }
             mainController.AddProduct(prod);
+            clearInputs();
             thisStage.close();
         }
     }

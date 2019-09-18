@@ -1,5 +1,6 @@
 anthonyknight\wguinventorytrackingapplication\model\InHouse.class
 anthonyknight\wguinventorytrackingapplication\model\Product.class
+anthonyknight\wguinventorytrackingapplication\controller\ModifyProductController.class
 anthonyknight\wguinventorytrackingapplication\controller\AddPartController.class
 anthonyknight\wguinventorytrackingapplication\controller\AddProductController.class
 anthonyknight\wguinventorytrackingapplication\controller\State.class
