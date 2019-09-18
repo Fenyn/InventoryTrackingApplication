@@ -37,7 +37,7 @@
                      </font>
                   </Text>
                   <TextField id="PartSearchField" prefHeight="25.0" prefWidth="117.0" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" />
-                  <Button id="PartSearch" alignment="CENTER" mnemonicParsing="false" text="Search" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <Button id="PartSearch" fx:id="PartSearchButton" alignment="CENTER" mnemonicParsing="false" onAction="#PartSearchButtonAction" text="Search" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                   <Button id="PartAdd" fx:id="PartAdd" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#PartAddButton" prefHeight="30.0" prefWidth="70.0" text="Add" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Button id="PartRemove" fx:id="PartRemove" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#PartRemoveButton" prefHeight="30.0" prefWidth="70.0" text="Remove" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                   <Button id="PartModify" fx:id="PartModify" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#PartModifyButton" prefHeight="30.0" prefWidth="70.0" text="Modify" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="3" />
@@ -81,10 +81,10 @@
                      </font>
                   </Text>
                   <TextField id="ProductSearchField" prefHeight="25.0" prefWidth="117.0" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" />
-                  <Button id="ProductSearch" alignment="CENTER" mnemonicParsing="false" text="Search" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <Button id="ProductAdd" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="70.0" text="Add" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Button id="ProductRemove" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="70.0" text="Remove" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                  <Button id="ProductModify" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="70.0" text="Modify" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  <Button id="ProductSearch" fx:id="ProductSearchButton" alignment="CENTER" mnemonicParsing="false" onAction="#ProductSearchButtonAction" text="Search" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <Button id="ProductAdd" fx:id="ProductAdd" alignment="CENTER" mnemonicParsing="false" onAction="#ProductAddButton" prefHeight="30.0" prefWidth="70.0" text="Add" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Button id="ProductRemove" fx:id="ProductRemove" alignment="CENTER" mnemonicParsing="false" onAction="#ProductRemoveButton" prefHeight="30.0" prefWidth="70.0" text="Remove" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <Button id="ProductModify" fx:id="ProductModify" alignment="CENTER" mnemonicParsing="false" onAction="#ProductModifyButton" prefHeight="30.0" prefWidth="70.0" text="Modify" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                   <TableView id="ProductTable" fx:id="ProductTable" GridPane.columnSpan="4" GridPane.rowIndex="1" GridPane.rowSpan="2">
                      <columns>
                         <TableColumn editable="false" minWidth="-1.0" prefWidth="75.0" text="Product ID" />

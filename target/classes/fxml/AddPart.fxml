@@ -27,12 +27,12 @@
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID" wrappingWidth="100.607421875" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" wrappingWidth="102.693359375" GridPane.rowIndex="1" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Inv" wrappingWidth="100.732421875" GridPane.rowIndex="2" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Stock" wrappingWidth="100.732421875" GridPane.rowIndex="2" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price/Cost" wrappingWidth="100.912109375" GridPane.rowIndex="3" />
             <TextField disable="true" editable="false" promptText="ID" text="AutoGen - Disabled" GridPane.columnIndex="1" />
             <TextField fx:id="NamePrompt" promptText="Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="StockPrompt" promptText="Inv" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="PricePrompt" promptText="Price/Cost" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="StockPrompt" promptText="# of units available" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="PricePrompt" promptText="Cost Per Unit" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       <GridPane hgap="10.0" layoutX="14.0" layoutY="272.0" prefHeight="30.0" prefWidth="324.0">

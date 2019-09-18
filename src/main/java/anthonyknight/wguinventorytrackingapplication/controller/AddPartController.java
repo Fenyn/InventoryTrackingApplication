@@ -3,10 +3,8 @@ package anthonyknight.wguinventorytrackingapplication.controller;
 import anthonyknight.wguinventorytrackingapplication.model.InHouse;
 import anthonyknight.wguinventorytrackingapplication.model.Outsourced;
 import anthonyknight.wguinventorytrackingapplication.model.Part;
-import anthonyknight.wguinventorytrackingapplication.view.MainMenu;
 import java.io.IOException;
 import java.net.URL;
-import java.security.InvalidParameterException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,10 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -147,11 +142,13 @@ public class AddPartController implements Initializable {
         thisStage.showAndWait();
     }
 
+    //small wrapper to create user error alerts
     private void alertUser(String input) {
         Alert alert = new Alert(AlertType.ERROR, input, ButtonType.OK);
         alert.showAndWait();
     }
 
+    //check for valid inputs for the text prompts
     private boolean validateFunction() {
         if (NamePrompt.getText().isEmpty()
                 || PricePrompt.getText().isEmpty()
@@ -223,6 +220,7 @@ public class AddPartController implements Initializable {
         return true;
     }
 
+    //empty all text prompts to reset the form
     private void clearInputs() {
         NamePrompt.clear();
         PricePrompt.clear();

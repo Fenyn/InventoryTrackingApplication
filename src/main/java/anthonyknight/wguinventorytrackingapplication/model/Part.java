@@ -78,7 +78,5 @@ public abstract class Part {
         return "";
     }
     
-    public void setVariable(String input){
-        
-    }
+    public abstract void setVariable(String input);
 }

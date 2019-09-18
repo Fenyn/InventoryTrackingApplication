@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -29,6 +30,39 @@ public class MainMenuController implements Initializable {
     Inventory inventory;
     ObservableList<Part> allParts;
     ObservableList<Product> allProducts;
+
+    @FXML
+    private Button PartSearchButton;
+
+    @FXML
+    private Button PartAdd;
+
+    @FXML
+    private Button PartRemove;
+
+    @FXML
+    private Button PartModify;
+
+    @FXML
+    private Button ProductSearchButton;
+
+    @FXML
+    private Button ProductAdd;
+
+    @FXML
+    private Button ProductRemove;
+
+    @FXML
+    private Button ProductModify;
+
+    @FXML
+    private Button Exit;
+
+    @FXML
+    private TableView<Part> PartTable;
+
+    @FXML
+    private TableView<Product> ProductTable;
 
     public MainMenuController() {
         thisStage = new Stage();
@@ -48,12 +82,6 @@ public class MainMenuController implements Initializable {
             e.printStackTrace();
         }
     }
-
-    @FXML
-    private TableView<Part> PartTable;
-
-    @FXML
-    private TableView ProductTable;
 
     @FXML
     private void PartAddButton(ActionEvent event) {
@@ -99,6 +127,12 @@ public class MainMenuController implements Initializable {
         inventory.addPart(new InHouse("hammer", 5.00, 3, 0, 5, 1234));
         inventory.addPart(new InHouse("basketball", 5.00, 3, 0, 5, 1234));
 
+        Product prod = new Product("big hammer", 12.00, 4, 0, 10);
+        prod.addAssociatedPart(inventory.lookupPart(2));
+        prod.addAssociatedPart(inventory.lookupPart(3));
+
+        inventory.addProduct(prod);
+
         allParts = inventory.getAllParts();
 
         PartTable.setItems(allParts);
@@ -108,25 +142,66 @@ public class MainMenuController implements Initializable {
         PartTable.getVisibleLeafColumn(2).setCellValueFactory(new PropertyValueFactory("Stock"));
         PartTable.getVisibleLeafColumn(3).setCellValueFactory(new PropertyValueFactory("Price"));
 
-//        ProductTable.setItems();
-//        
-//        ProductTable.getVisibleLeafColumn(0).setCellValueFactory(new PropertyValueFactory("ID"));
-//        ProductTable.getVisibleLeafColumn(1).setCellValueFactory(new PropertyValueFactory("Name"));
-//        ProductTable.getVisibleLeafColumn(2).setCellValueFactory(new PropertyValueFactory("Price"));
-//        ProductTable.getVisibleLeafColumn(3).setCellValueFactory(new PropertyValueFactory("Stock"));
+        allProducts = inventory.getAllProducts();
+
+        ProductTable.setItems(allProducts);
+
+        ProductTable.getVisibleLeafColumn(0).setCellValueFactory(new PropertyValueFactory("ID"));
+        ProductTable.getVisibleLeafColumn(1).setCellValueFactory(new PropertyValueFactory("Name"));
+        ProductTable.getVisibleLeafColumn(2).setCellValueFactory(new PropertyValueFactory("Price"));
+        ProductTable.getVisibleLeafColumn(3).setCellValueFactory(new PropertyValueFactory("Stock"));
     }
 
     public void AddPart(Part part) {
         inventory.addPart(part);
     }
-    
-    public void ModifyPart(Part part){
+
+    public void ModifyPart(Part part) {
         int index = inventory.GetIndexOfPartByID(part.getID());
         inventory.updatePart(index, part);
+    }
+    
+    public void AddProduct(Product prod){
+        inventory.addProduct(prod);
+    }
+    
+    public void ModifyProduct(Product prod){
+        int index = inventory.GetIndexOfProductByID(prod.getID());
+        inventory.updateProduct(index, prod);
     }
 
     public void showStage() {
         thisStage.showAndWait();
+    }
+
+    @FXML
+    void PartSearchButtonAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void ProductAddButton(ActionEvent event) {
+        AddProductController addProductController = new AddProductController(this);
+        addProductController.showStage();
+    }
+
+    @FXML
+    void ProductModifyButton(ActionEvent event) {
+
+    }
+
+    @FXML
+    void ProductRemoveButton(ActionEvent event) {
+
+    }
+
+    @FXML
+    void ProductSearchButtonAction(ActionEvent event) {
+
+    }
+    
+    public ObservableList<Part> GetAllParts(){
+        return inventory.getAllParts();
     }
 
 }

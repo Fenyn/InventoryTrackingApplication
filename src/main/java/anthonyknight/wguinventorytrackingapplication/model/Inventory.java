@@ -32,10 +32,10 @@ public class Inventory {
     public void addProduct(Product newProduct) {
         if (allProducts == null) {
             allProducts = FXCollections.observableArrayList();
-            newProduct.setId(1);
+            newProduct.setID(1);
         } else {
             Product product = allProducts.get(allProducts.size() - 1);
-            newProduct.setId(product.id + 1);
+            newProduct.setID(product.id + 1);
         }
 
         allProducts.add(newProduct);
@@ -52,11 +52,11 @@ public class Inventory {
 
     public Product lookupProduct(int productID) {
         for (Product product : allProducts) {
-            if (product.getId() == productID) {
+            if (product.getID() == productID) {
                 return product;
             }
         }
-        return new Product();
+        return null;
     }
 
     public ObservableList<Part> lookupPart(String partName) {
@@ -109,6 +109,12 @@ public class Inventory {
     public int GetIndexOfPartByID(int partID){
         Part part = lookupPart(partID);
         int index = allParts.indexOf(part);
+        return index;
+    }
+
+    public int GetIndexOfProductByID(int id) {
+        Product prod = lookupProduct(id);
+        int index = allParts.indexOf(prod);
         return index;
     }
 

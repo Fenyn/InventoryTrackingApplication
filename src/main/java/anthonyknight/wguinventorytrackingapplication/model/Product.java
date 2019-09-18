@@ -20,6 +20,15 @@ public class Product {
     int stock;
     int min;
     int max;
+    
+    public Product(String name, double price, int stock, int min, int max){
+        this.id = -1;
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        this.min = min;
+        this.max = max;
+    }
 
     public ObservableList<Part> getAllAssociatedParts() {
         return associatedParts;
@@ -39,11 +48,11 @@ public class Product {
         }
     }
 
-    public int getId() {
+    public int getID() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setID(int id) {
         this.id = id;
     }
 
