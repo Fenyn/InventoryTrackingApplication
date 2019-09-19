@@ -7,7 +7,7 @@ package anthonyknight.wguinventorytrackingapplication.model;
 
 /**
  *
- * @author Midge
+ * @author Anthony Knight
  */
 public abstract class Part {
     int id;

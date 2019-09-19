@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -35,6 +38,9 @@ public class MainMenuController implements Initializable {
     private Button PartSearchButton;
 
     @FXML
+    private TextField PartSearchBar;
+
+    @FXML
     private Button PartAdd;
 
     @FXML
@@ -45,6 +51,9 @@ public class MainMenuController implements Initializable {
 
     @FXML
     private Button ProductSearchButton;
+
+    @FXML
+    private TextField ProductSearchBar;
 
     @FXML
     private Button ProductAdd;
@@ -99,6 +108,8 @@ public class MainMenuController implements Initializable {
         if (alert.getResult() == ButtonType.YES) {
             inventory.deletePart(part);
         }
+        RefreshTables();
+
     }
 
     @FXML
@@ -122,47 +133,44 @@ public class MainMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         inventory = new Inventory();
-//        inventory.addPart(new InHouse("axe", 2.00, 3, 0, 5, 1234));
-//        inventory.addPart(new InHouse("sword", 5.00, 3, 0, 5, 1234));
-//        inventory.addPart(new InHouse("hammer", 5.00, 3, 0, 5, 1234));
-//        inventory.addPart(new InHouse("basketball", 5.00, 3, 0, 5, 1234));
-
-
         allParts = inventory.getAllParts();
+        allProducts = inventory.getAllProducts();
 
         PartTable.setItems(allParts);
+        ProductTable.setItems(allProducts);
 
         PartTable.getVisibleLeafColumn(0).setCellValueFactory(new PropertyValueFactory("ID"));
         PartTable.getVisibleLeafColumn(1).setCellValueFactory(new PropertyValueFactory("Name"));
         PartTable.getVisibleLeafColumn(2).setCellValueFactory(new PropertyValueFactory("Stock"));
         PartTable.getVisibleLeafColumn(3).setCellValueFactory(new PropertyValueFactory("Price"));
 
-        allProducts = inventory.getAllProducts();
-
-        ProductTable.setItems(allProducts);
-
         ProductTable.getVisibleLeafColumn(0).setCellValueFactory(new PropertyValueFactory("ID"));
         ProductTable.getVisibleLeafColumn(1).setCellValueFactory(new PropertyValueFactory("Name"));
-        ProductTable.getVisibleLeafColumn(2).setCellValueFactory(new PropertyValueFactory("Price"));
-        ProductTable.getVisibleLeafColumn(3).setCellValueFactory(new PropertyValueFactory("Stock"));
+        ProductTable.getVisibleLeafColumn(2).setCellValueFactory(new PropertyValueFactory("Stock"));
+        ProductTable.getVisibleLeafColumn(3).setCellValueFactory(new PropertyValueFactory("Price"));
+
     }
 
     public void AddPart(Part part) {
         inventory.addPart(part);
+        RefreshTables();
     }
 
     public void ModifyPart(Part part) {
         int index = inventory.GetIndexOfPartByID(part.getID());
         inventory.updatePart(index, part);
+        RefreshTables();
     }
 
     public void AddProduct(Product prod) {
         inventory.addProduct(prod);
+        RefreshTables();
     }
 
     public void ModifyProduct(Product prod) {
         int index = inventory.GetIndexOfProductByID(prod.getID());
         inventory.updateProduct(index, prod);
+        RefreshTables();
     }
 
     public void showStage() {
@@ -171,7 +179,44 @@ public class MainMenuController implements Initializable {
 
     @FXML
     void PartSearchButtonAction(ActionEvent event) {
+        //the following search algorithm is a modified version of the one found
+        //here: https://stackoverflow.com/questions/44317837/create-search-textfield-field-to-search-in-a-javafx-tableview
+        FilteredList<Part> filteredData = null;
+        try {
+            filteredData = new FilteredList<>(allParts, p -> true);
+        } catch (NullPointerException e) {
 
+        }
+
+        String searchText = PartSearchBar.getText();
+        if (filteredData != null) {
+            // 2. Set the filter Predicate whenever the filter changes.
+            filteredData.setPredicate(myObject -> {
+                // If filter text is empty, display all persons.
+                if (searchText == null || searchText.isEmpty()) {
+                    return true;
+                }
+
+                // Compare first name and last name field in your object with filter.
+                String lowerCaseFilter = searchText.toLowerCase();
+
+                if (String.valueOf(myObject.getName()).toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                    // Filter matches first name.
+
+                }
+                return false; // Does not match.
+            });
+
+            // 3. Wrap the FilteredList in a SortedList. 
+            SortedList<Part> sortedData = new SortedList<>(filteredData);
+
+            // 4. Bind the SortedList comparator to the TableView comparator.
+            sortedData.comparatorProperty().bind(PartTable.comparatorProperty());
+            // 5. Add sorted (and filtered) data to the table.
+            PartTable.setItems(sortedData);
+        }
+        //end of modified algorithm
     }
 
     @FXML
@@ -194,16 +239,74 @@ public class MainMenuController implements Initializable {
 
     @FXML
     void ProductRemoveButton(ActionEvent event) {
+        Product product = ProductTable.getSelectionModel().getSelectedItem();
+        if (product == null) {
+            Alert alert = new Alert(AlertType.ERROR, "You must select an item to delete from the table", ButtonType.OK);
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(AlertType.CONFIRMATION, "Delete " + product.getName() + "?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+            alert.showAndWait();
 
+            if (alert.getResult() == ButtonType.YES) {
+                inventory.deleteProduct(product);
+            }
+        }
+        RefreshTables();
     }
 
     @FXML
     void ProductSearchButtonAction(ActionEvent event) {
+        //the following search algorithm is a modified version of the one found
+        //here: https://stackoverflow.com/questions/44317837/create-search-textfield-field-to-search-in-a-javafx-tableview
+        FilteredList<Product> filteredData = null;
+        try {
+            filteredData = new FilteredList<>(allProducts, p -> true);
+        } catch (NullPointerException e) {
 
+        }
+
+        String searchText = ProductSearchBar.getText();
+        if (filteredData != null) {
+            // 2. Set the filter Predicate whenever the filter changes.
+            filteredData.setPredicate(myObject -> {
+                // If filter text is empty, display all persons.
+                if (searchText == null || searchText.isEmpty()) {
+                    return true;
+                }
+
+                // Compare first name and last name field in your object with filter.
+                String lowerCaseFilter = searchText.toLowerCase();
+
+                if (String.valueOf(myObject.getName()).toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                    // Filter matches first name.
+
+                }
+                return false; // Does not match.
+            });
+
+            // 3. Wrap the FilteredList in a SortedList. 
+            SortedList<Product> sortedData = new SortedList<>(filteredData);
+
+            // 4. Bind the SortedList comparator to the TableView comparator.
+            sortedData.comparatorProperty().bind(ProductTable.comparatorProperty());
+            // 5. Add sorted (and filtered) data to the table.
+            ProductTable.setItems(sortedData);
+        }
+        //end of modified algorithm
     }
 
     public ObservableList<Part> GetAllParts() {
         return inventory.getAllParts();
+    }
+
+    private void RefreshTables() {
+        allProducts = inventory.getAllProducts();
+        allParts = inventory.getAllParts();
+        PartTable.setItems(allParts);
+        ProductTable.setItems(allProducts);
+        PartTable.refresh();
+        ProductTable.refresh();
     }
 
 }

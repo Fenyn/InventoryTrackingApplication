@@ -12,6 +12,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -100,7 +102,44 @@ public class ModifyProductController implements Initializable {
 
     @FXML
     void SearchButtonAction(ActionEvent event) {
+        //the following search algorithm is a modified version of the one found
+        //here: https://stackoverflow.com/questions/44317837/create-search-textfield-field-to-search-in-a-javafx-tableview
+        FilteredList<Part> filteredData = null;
+        try {
+            filteredData = new FilteredList<>(allParts, p -> true);
+        } catch (NullPointerException e) {
 
+        }
+
+        String searchText = SearchField.getText();
+        if (filteredData != null) {
+            // 2. Set the filter Predicate whenever the filter changes.
+            filteredData.setPredicate(myObject -> {
+                // If filter text is empty, display all persons.
+                if (searchText == null || searchText.isEmpty()) {
+                    return true;
+                }
+
+                // Compare first name and last name field in your object with filter.
+                String lowerCaseFilter = searchText.toLowerCase();
+
+                if (String.valueOf(myObject.getName()).toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                    // Filter matches first name.
+
+                }
+                return false; // Does not match.
+            });
+
+            // 3. Wrap the FilteredList in a SortedList. 
+            SortedList<Part> sortedData = new SortedList<>(filteredData);
+
+            // 4. Bind the SortedList comparator to the TableView comparator.
+            sortedData.comparatorProperty().bind(AllPartsTable.comparatorProperty());
+            // 5. Add sorted (and filtered) data to the table.
+            AllPartsTable.setItems(sortedData);
+        }
+        //end of modified algorithm
     }
 
     @FXML
@@ -118,17 +157,19 @@ public class ModifyProductController implements Initializable {
             activeProduct.setMin(min);
             activeProduct.setMax(max);
 
-            ObservableList<Part> currentActiveParts = activeProduct.getAllAssociatedParts();
-            for (int i = 0; i <  currentActiveParts.size(); i++){
-                activeProduct.deleteAssociatedPart(currentActiveParts.get(i));
+            //wrap the getAllAssociatedParts() in an FXCollections ArrayList so that we can get a copy of the
+            //array rather than direct access. Otherwise, activeProdParts would change sizes with each iteration
+            //and cause .get(i) to fail.
+            ObservableList<Part> activeProdParts = FXCollections.observableArrayList(activeProduct.getAllAssociatedParts());
+            for (int i = 0; i <  activeProdParts.size(); i++){
+                activeProduct.deleteAssociatedPart(activeProdParts.get(i));
             }
 
-            Product prod = new Product(name, price, stock, min, max);
             for (Part part : currentParts) {
-                prod.addAssociatedPart(part);
+                activeProduct.addAssociatedPart(part);
             }
 
-            mainController.ModifyProduct(prod);
+            mainController.ModifyProduct(activeProduct);
             thisStage.close();
         }
     }
@@ -155,7 +196,7 @@ public class ModifyProductController implements Initializable {
         this.activeProduct = prod;
 
         thisStage = new Stage();
-        currentParts = activeProduct.getAllAssociatedParts();
+        currentParts = FXCollections.observableArrayList(activeProduct.getAllAssociatedParts());
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ModifyProduct.fxml"));
@@ -165,7 +206,7 @@ public class ModifyProductController implements Initializable {
             Scene scene = new Scene(root);
             scene.getStylesheets().add("/styles/MainMenuStyle.css");
 
-            thisStage.setTitle("Inventory Tracking Application");
+            thisStage.setTitle("Modify Product");
             thisStage.setScene(scene);
 
         } catch (IOException e) {

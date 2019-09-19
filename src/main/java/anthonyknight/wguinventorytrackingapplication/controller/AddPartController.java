@@ -66,7 +66,7 @@ public class AddPartController implements Initializable {
             Scene scene = new Scene(root);
             scene.getStylesheets().add("/styles/MainMenuStyle.css");
 
-            thisStage.setTitle("Inventory Tracking Application");
+            thisStage.setTitle("Add Part");
             thisStage.setScene(scene);
 
         } catch (IOException e) {

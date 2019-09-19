@@ -10,7 +10,7 @@ import javafx.collections.ObservableList;
 
 /**
  *
- * @author Midge
+ * @author Anthony Knight
  */
 public class Inventory {
 
@@ -21,9 +21,11 @@ public class Inventory {
         if (allParts == null) {
             allParts = FXCollections.observableArrayList();
             newPart.setID(1);
-        } else {
+        } else if (allParts.size() > 0) {
             Part part = allParts.get(allParts.size() - 1);
             newPart.setID(part.id + 1);
+        } else if (allParts.size() == 0){
+            newPart.setID(1);
         }
 
         allParts.add(newPart);
@@ -33,9 +35,11 @@ public class Inventory {
         if (allProducts == null) {
             allProducts = FXCollections.observableArrayList();
             newProduct.setID(1);
-        } else {
+        } else if (allProducts.size() > 0) {
             Product product = allProducts.get(allProducts.size() - 1);
             newProduct.setID(product.id + 1);
+        } else if (allProducts.size() == 0){
+            newProduct.setID(1);
         }
 
         allProducts.add(newProduct);
@@ -114,7 +118,7 @@ public class Inventory {
 
     public int GetIndexOfProductByID(int id) {
         Product prod = lookupProduct(id);
-        int index = allParts.indexOf(prod);
+        int index = allProducts.indexOf(prod);
         return index;
     }
 

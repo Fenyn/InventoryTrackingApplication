@@ -7,7 +7,7 @@ package anthonyknight.wguinventorytrackingapplication.model;
 
 /**
  *
- * @author Midge
+ * @author Anthony Knight
  */
 public class Outsourced extends Part{
     

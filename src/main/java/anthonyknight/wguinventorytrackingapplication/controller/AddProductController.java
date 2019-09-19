@@ -12,6 +12,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -96,7 +98,44 @@ public class AddProductController implements Initializable {
 
     @FXML
     void SearchButtonAction(ActionEvent event) {
+        //the following search algorithm is a modified version of the one found
+        //here: https://stackoverflow.com/questions/44317837/create-search-textfield-field-to-search-in-a-javafx-tableview
+        FilteredList<Part> filteredData = null;
+        try {
+            filteredData = new FilteredList<>(allParts, p -> true);
+        } catch (NullPointerException e) {
 
+        }
+
+        String searchText = SearchField.getText();
+        if (filteredData != null) {
+            // 2. Set the filter Predicate whenever the filter changes.
+            filteredData.setPredicate(myObject -> {
+                // If filter text is empty, display all persons.
+                if (searchText == null || searchText.isEmpty()) {
+                    return true;
+                }
+
+                // Compare first name and last name field in your object with filter.
+                String lowerCaseFilter = searchText.toLowerCase();
+
+                if (String.valueOf(myObject.getName()).toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                    // Filter matches first name.
+
+                }
+                return false; // Does not match.
+            });
+
+            // 3. Wrap the FilteredList in a SortedList. 
+            SortedList<Part> sortedData = new SortedList<>(filteredData);
+
+            // 4. Bind the SortedList comparator to the TableView comparator.
+            sortedData.comparatorProperty().bind(AllPartsTable.comparatorProperty());
+            // 5. Add sorted (and filtered) data to the table.
+            AllPartsTable.setItems(sortedData);
+        }
+        //end of modified algorithm
     }
 
     @FXML
@@ -130,8 +169,8 @@ public class AddProductController implements Initializable {
         CurrentPartsTable.setItems(currentParts);
         CurrentPartsTable.getVisibleLeafColumn(0).setCellValueFactory(new PropertyValueFactory("ID"));
         CurrentPartsTable.getVisibleLeafColumn(1).setCellValueFactory(new PropertyValueFactory("Name"));
-        CurrentPartsTable.getVisibleLeafColumn(2).setCellValueFactory(new PropertyValueFactory("Price"));
-        CurrentPartsTable.getVisibleLeafColumn(3).setCellValueFactory(new PropertyValueFactory("Stock"));
+        CurrentPartsTable.getVisibleLeafColumn(2).setCellValueFactory(new PropertyValueFactory("Stock"));
+        CurrentPartsTable.getVisibleLeafColumn(3).setCellValueFactory(new PropertyValueFactory("Price"));
     }
 
     public AddProductController(MainMenuController mainController) {
@@ -149,7 +188,7 @@ public class AddProductController implements Initializable {
             Scene scene = new Scene(root);
             scene.getStylesheets().add("/styles/MainMenuStyle.css");
 
-            thisStage.setTitle("Inventory Tracking Application");
+            thisStage.setTitle("Add Product Window");
             thisStage.setScene(scene);
 
         } catch (IOException e) {

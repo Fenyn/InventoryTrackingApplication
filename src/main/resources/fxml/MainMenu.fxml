@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -36,7 +37,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Text>
-                  <TextField id="PartSearchField" prefHeight="25.0" prefWidth="117.0" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" />
+                  <TextField id="PartSearchField" fx:id="PartSearchBar" prefHeight="25.0" prefWidth="117.0" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" />
                   <Button id="PartSearch" fx:id="PartSearchButton" alignment="CENTER" mnemonicParsing="false" onAction="#PartSearchButtonAction" text="Search" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                   <Button id="PartAdd" fx:id="PartAdd" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#PartAddButton" prefHeight="30.0" prefWidth="70.0" text="Add" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Button id="PartRemove" fx:id="PartRemove" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#PartRemoveButton" prefHeight="30.0" prefWidth="70.0" text="Remove" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
@@ -80,7 +81,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Text>
-                  <TextField id="ProductSearchField" prefHeight="25.0" prefWidth="117.0" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" />
+                  <TextField id="ProductSearchField" fx:id="ProductSearchBar" prefHeight="25.0" prefWidth="117.0" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" />
                   <Button id="ProductSearch" fx:id="ProductSearchButton" alignment="CENTER" mnemonicParsing="false" onAction="#ProductSearchButtonAction" text="Search" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                   <Button id="ProductAdd" fx:id="ProductAdd" alignment="CENTER" mnemonicParsing="false" onAction="#ProductAddButton" prefHeight="30.0" prefWidth="70.0" text="Add" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Button id="ProductRemove" fx:id="ProductRemove" alignment="CENTER" mnemonicParsing="false" onAction="#ProductRemoveButton" prefHeight="30.0" prefWidth="70.0" text="Remove" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
@@ -108,5 +109,10 @@
             <Font size="13.0" />
          </font>
       </Button>
+      <Label layoutX="31.0" layoutY="18.0" prefHeight="59.0" prefWidth="329.0" text="Inventory Tracking Application">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
