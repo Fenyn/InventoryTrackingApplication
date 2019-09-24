@@ -51,7 +51,7 @@ public class ModifyPartController {
 
     @FXML
     private ToggleGroup PartToggle;
-    
+
     @FXML
     private RadioButton OutsourcedToggleButton;
 
@@ -85,15 +85,17 @@ public class ModifyPartController {
             int max = Integer.parseInt(MaxPrompt.getText());
             String variable = VariablePrompt.getText();
 
-            activePart.setName(name);
-            activePart.setPrice(price);
-            activePart.setStock(stock);
-            activePart.setMin(min);
-            activePart.setMax(max);
-            activePart.setVariable(variable);
+            Part newPart;
+            if (state == State.INHOUSE) {
+                newPart = new InHouse(name, price, stock, min, max, Integer.valueOf(variable));
+                newPart.setID(activePart.getID());
+            } else {
+                newPart = new Outsourced(name, price, stock, min, max, variable);
+                newPart.setID(activePart.getID());
+            }
 
-            mainController.ModifyPart(activePart);
-            
+            mainController.ModifyPart(newPart);
+
             thisStage.close();
         }
 
@@ -104,8 +106,6 @@ public class ModifyPartController {
         this.activePart = part;
 
         thisStage = new Stage();
-        
-        
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ModifyPart.fxml"));
@@ -122,13 +122,13 @@ public class ModifyPartController {
             e.printStackTrace();
         }
 
-        if (activePart.getClass().isInstance(InHouse.class)){
+        if (InHouse.class.isInstance(activePart)) {
             state = State.INHOUSE;
         } else {
             state = State.OUTSOURCED;
             PartToggle.selectToggle(OutsourcedToggleButton);
         }
-        
+
         PopulateWindow();
 
     }
@@ -153,9 +153,15 @@ public class ModifyPartController {
         MinPrompt.setText(Min);
         MaxPrompt.setText(Max);
         VariablePrompt.setText(Variable);
+        
+        if (state == State.INHOUSE){
+            LoadInHouse(new ActionEvent());
+        } else {
+            LoadOutsourced(new ActionEvent());
+        }
 
     }
-    
+
     private boolean validateFunction() {
         if (NamePrompt.getText().isEmpty()
                 || PricePrompt.getText().isEmpty()
@@ -208,7 +214,7 @@ public class ModifyPartController {
                 alertUser("Stock must be within the min and max bounds");
                 return false;
             }
-            
+
         } catch (NumberFormatException e) {
             alertUser("Stock must be an integer");
             return false;
