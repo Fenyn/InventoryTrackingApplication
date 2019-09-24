@@ -1,1 +1,1 @@
-# WGUInventoryTrackingApplication
+# InventoryTrackingApplication
